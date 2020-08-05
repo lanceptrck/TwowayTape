@@ -12,20 +12,12 @@ import org.junit.Test;
 public class ParserTest {
 
 	private AutomataParser ap;
-	private List<String> language;
+	private LanguageReader lr;
 
 	@Before
 	public void setup() {
-		language = new ArrayList<String>();
-		language.add("1]right(b,1)");
-		language.add("1]right(a,2)");
-		language.add("1]right(#,3)");
-		language.add("2]right(b,2)");
-		language.add("2]right(a,1)");
-		language.add("2]right(#,4)");
-		language.add("3]accept");
-		language.add("4]hell");
-		ap = new AutomataParser(language);
+		lr = new LanguageReader("language_1.txt");
+		ap = new AutomataParser(lr.getLanguage());
 	}
 
 	@Test
