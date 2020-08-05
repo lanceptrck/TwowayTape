@@ -68,12 +68,14 @@ public class OmegaChecker {
 		}
 
 		if (dir.equals(Direction.ACCEPT)) {
-			System.out.println("The omega: " + omega + " is valid for this language.");
+			System.out.println("The omega: " + omega + " is ACCEPTED for this language.");
+			System.out.println();
 			return true;
 		}
 
 		else {
-			System.out.println("The omega: " + omega + " is invalid for this language.");
+			System.out.println("The omega: " + omega + " is REJECTED for this language.");
+			System.out.println();
 			return false;
 		}
 

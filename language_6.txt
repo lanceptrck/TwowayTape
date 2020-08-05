@@ -1,0 +1,8 @@
+1]right(a,2)
+1]right(b,1)
+1]right(#,3)
+2]right(a,1)
+2]right(b,2)
+2]right(#,4)
+3]accept
+4]hell

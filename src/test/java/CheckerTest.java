@@ -15,20 +15,21 @@ public class CheckerTest {
 		ap.displayAllStates();
 		return new OmegaChecker(ap.getStates());
 	}
-
-	@Test
-	public void test_valid_omega() {
-		OmegaChecker oc = returnChecker("language_5.txt");
-		assertEquals(true, oc.isOmegaValid("#aababb#"));
-		assertEquals(false, oc.isOmegaValid("#ababb#"));
-
+	
+	public void test_valid_omega_for_problem_1() {
+		OmegaChecker oc = returnChecker("language_6.txt");
+		assertEquals(false, oc.isOmegaValid("#aaba#"));
+		assertEquals(true, oc.isOmegaValid("#bbbaba#"));
+		assertEquals(true, oc.isOmegaValid("#babab#"));
+		assertEquals(true, oc.isOmegaValid("#bb#"));
 	}
-
+	
 	@Test
-	public void test_language_1_all_num_of_a_must_be_even() {
-		OmegaChecker oc = returnChecker("language_1.txt");
-		assertEquals(true, oc.isOmegaValid("#aaaa#"));
-		assertEquals(false, oc.isOmegaValid("#abbb#"));
+	public void test_valid_omegas_for_problem_2() {
+		OmegaChecker oc = returnChecker("language_7.txt");
+		oc.isOmegaValid("#aaba#");
+		oc.isOmegaValid("#bbbaba#");
+		oc.isOmegaValid("#babab#");
 	}
 
 }

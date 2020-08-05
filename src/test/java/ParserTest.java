@@ -16,7 +16,7 @@ public class ParserTest {
 
 	@Before
 	public void setup() {
-		lr = new LanguageReader("language_1.txt");
+		lr = new LanguageReader("language_7.txt");
 		ap = new AutomataParser(lr.getLanguage());
 	}
 
