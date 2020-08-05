@@ -6,27 +6,14 @@ import java.util.Set;
 public class OmegaChecker {
 
 	private List<State> states;
-	private String omega;
 	private Set<String> validTokens;
 	private List<Integer> endStateNumbers;
-
-	public OmegaChecker(List<State> states, String omega) {
-		super();
-		this.states = states;
-		this.omega = omega;
-		this.validTokens = new HashSet<>();
-		retrieveValidTokens();
-	}
 
 	public OmegaChecker(List<State> states) {
 		super();
 		this.states = states;
 		this.validTokens = new HashSet<>();
 		retrieveValidTokens();
-	}
-
-	public void setOmega(String omega) {
-		this.omega = omega;
 	}
 
 	private void retrieveValidTokens() {
@@ -48,29 +35,29 @@ public class OmegaChecker {
 		return endStateNumbers;
 	}
 
-	public boolean isOmegaValid() {
+	public boolean isOmegaValid(String omega) {
 		char[] tape = omega.toCharArray();
 		int myState = 1;
-		int gotoState = 1;
 		int position = 0;
 		Direction dir = Direction.RIGHT;
+		boolean initial = true;
 
 		while (position <= omega.length() && !dir.equals(Direction.HELL) && !dir.equals(Direction.ACCEPT)) {
-			;
-			if (position == 0) {
+
+			if (position == 0 && initial) {
 				if (tape[position] != '#') {
 					return false;
-				} else
+				} else {
 					System.out.println("Token is " + tape[position] + ", Start of tape");
+					initial = false;
+				}
 			} else {
+
 				char curr = tape[position];
 				State st = getGotoStateByInputToken(myState, curr + "");
 				dir = st.getDirection();
-				System.out.println(dir);
 				myState = st.getMyState();
 
-				if (!dir.equals(Direction.HELL) && !dir.equals(Direction.ACCEPT))
-					gotoState = st.getGoToState();
 			}
 
 			if (dir.equals(Direction.RIGHT) || dir.equals(Direction.HELL) || dir.equals(Direction.ACCEPT))
@@ -92,18 +79,24 @@ public class OmegaChecker {
 
 	}
 
+	public State getGotoStateByCurrentState(State currState, String token) {
+		return null;
+	}
+
 	public State getGotoStateByInputToken(int myState, String token) {
 		for (State st : states) {
 			if (st.getMyState() == myState && st.getToken().equals(token)) {
-				System.out.println(
-						"At state " + myState + ", Token is " + token + ", Will go to state " + st.getGoToState());
+				System.out.println("At state " + myState + " Token is " + token + ", going " + st.getDirection()
+						+ ", Will go to state " + st.getGoToState());
 
 				if (getEndStates().contains(st.getGoToState())) {
 					System.out.println("This one is an endstate.");
 					return getEndstateByStateNumber(st.getGoToState());
 				}
 
-				return getStateByTokenAndCurrentState(st.getGoToState(), token);
+				State targetState = new State(st.getGoToState(), st.getDirection());
+
+				return targetState;
 			}
 		}
 		return null;
@@ -133,10 +126,6 @@ public class OmegaChecker {
 		}
 
 		return null;
-	}
-
-	public String getOmega() {
-		return omega;
 	}
 
 	public Set<String> getValidTokens() {

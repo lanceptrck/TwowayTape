@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +48,8 @@ public class AutomataParser {
 		}
 
 		if (!containsEndstates()) {
-			throw new RuntimeException("The language provided does not contain endstates");
+			throw new RuntimeException(
+					"The language provided does not contain endstates or it does not end in hell or an accept state");
 		}
 
 	}
@@ -117,16 +120,49 @@ public class AutomataParser {
 
 		boolean containsHell = false;
 		boolean containsAccept = false;
+		boolean doesLanguageAccept = false;
+		boolean doesLanguageHell = false;
+
+		List<Integer> hellStateNums = new ArrayList<>();
+		List<Integer> acceptStateNums = new ArrayList<>();
+		Set<Integer> gotoStates = new HashSet<>();
 
 		for (State st : states) {
-			if (st.getDirection().equals(Direction.ACCEPT))
-				containsAccept = true;
 
-			if (st.getDirection().equals(Direction.HELL))
+			// Get states that goes to another state given an input
+			if (st.getGoToState() != null) {
+				gotoStates.add(st.getGoToState());
+			}
+
+			// Get the accepting states
+			if (st.getDirection().equals(Direction.ACCEPT)) {
+				containsAccept = true;
+				acceptStateNums.add(st.getMyState());
+			}
+
+			// Get the hell states
+			if (st.getDirection().equals(Direction.HELL)) {
 				containsHell = true;
+				hellStateNums.add(st.getMyState());
+			}
+
 		}
 
-		return containsHell && containsAccept;
+		for (Integer i : acceptStateNums) {
+			if (gotoStates.contains(i))
+				doesLanguageAccept = true;
+		}
+
+		for (Integer i : hellStateNums) {
+			if (gotoStates.contains(i))
+				doesLanguageHell = true;
+		}
+
+		return containsHell && containsAccept && doesLanguageAccept && doesLanguageHell;
+	}
+
+	public boolean doesLanguageEnd() {
+		return false;
 	}
 
 }
